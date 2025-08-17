@@ -1,0 +1,32 @@
+.MainLayout {
+    display: grid;
+    grid-template-rows: 10vh auto;
+}
+
+.content {
+    display: grid;
+    grid-template-columns: 20vh auto;
+}
+
+@media (max-width: 1024px) {
+    
+}
+
+@media (max-width: 768px) {
+    .MainLayout {
+        grid-template-rows: 5vh auto;
+    }
+    .content {
+        grid-template-columns: 12vh auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .MainLayout {
+        display: grid;
+    }
+    .content {
+        display: flex;
+    }
+    
+}
