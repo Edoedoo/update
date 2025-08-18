@@ -1,0 +1,125 @@
+.header {
+    display: grid;
+    grid-template-rows: 3vh;
+    width: 100%;
+    padding: 5px 20px;
+    background: rgb(8 27 41);
+    color: white;
+    padding-left: 20vh;
+    font-size: clamp(13px, 2vw, 16px);
+    position: fixed;
+    z-index: 99;
+    height: 10vh;
+}
+
+.topHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+}
+.midHeader {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+}
+.botHeader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
+}
+
+.navbarLogo {
+    position: absolute;
+    top: 0;
+    left: 5%;
+    cursor: pointer;
+    height: 10vh;
+}
+.navbarLogo img {
+    display: flex;
+    height: 100%;
+}
+
+.searchProduk {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    background-color: #f4f2f2;
+    border: none;
+    color: #292929;
+    padding: 0.7rem 1rem;
+    border-radius: 3px;
+    transition: all ease-in-out 0.5s;
+    padding-right: 2rem;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+  }
+  
+  .searchProduk:hover,
+  .searchProduk:focus {
+    box-shadow: 0 0 1em #00000013;
+  }
+  
+  .searchProduk:focus {
+    outline: none;
+    background-color: #f0eeee;
+  }
+  
+  .searchProduk::placeholder {
+    font-style: italic;
+    font-weight: 400;
+    color: rgb(130, 130, 130);
+    letter-spacing: 0.2px;
+  }
+  
+  .search-wrapper {
+    position: relative;
+    display: flex;
+    height: 3vh;
+    width: 50%;
+  }
+  
+  .clear-btn {
+    position: absolute;
+    right: 0.8rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    font-size: 16px;
+    color: rgb(0, 136, 255);
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s ease;
+    font-weight: bold;
+  }
+  
+  .clear-btn:hover {
+    color: #292929;
+  }
+
+
+@media (max-width: 1024px) {
+
+}
+
+@media (max-width: 768px) {
+    .navbarLogo  {
+        height: 5vh;
+    }
+    .header {
+        display: flex;
+        padding-left: 12vh;
+        height: 5vh;
+    }
+}   
+
+@media (max-width: 480px) {
+
+}
