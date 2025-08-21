@@ -57,6 +57,7 @@ const ContentProduct = () => {
     promo: item.promo,
   }));
 
+  const loginUntukLihatSemua = 'tester'
   const produkSemua = semuaProduk.map((item, i) => ({
     id: item.id,
     uniqueId: `semua-${i + 1}`,
@@ -98,7 +99,7 @@ const ContentProduct = () => {
       }
 
       const gettSemuaProduk = async () => {
-        const data = await getAllProduct({ limit: 30, page: 1 });
+        const data = await getAllProduct({ limit: 25, page: 1 });
         setSemuaProduk(data)
       }
 
@@ -191,7 +192,7 @@ const ContentProduct = () => {
 
 
   // Reusable section
-    const SectionProduk = ({ title, data, render, totalRekomendasi, hargaTermurah }) => (
+    const SectionProduk = ({ title, data, render, totalRekomendasi, hargaTermurah, loginUntukLihatSemua}) => (
       <div id="containerProduct">
         <div className="contentProductTittle">
           <h5>{title}</h5>
@@ -206,6 +207,11 @@ const ContentProduct = () => {
         <div className="mainProductRekomendasi">
           {data.length > 0 ? render(data) : <h5 className="no-product">Tidak ada produk</h5>}
         </div>
+        {loginUntukLihatSemua !== undefined && (
+          <div className="lihatLainnya">
+            <h6 className="btnLihatLainnya">Login Untuk Lihat Lainnya</h6>
+          </div>
+        )}
       </div>
     );
 
@@ -225,9 +231,6 @@ const ContentProduct = () => {
             </div>
           </div>
         </div>
-        <div className="navContentRight">
-          <h5>untuk keterangan kanan</h5>
-        </div>
       </div>
 
       <div className="contentProduct">
@@ -244,11 +247,7 @@ const ContentProduct = () => {
             totalRekomendasi={totalRekomendasi}
             />
           <SectionProduk title="Termurah" data={produkMurah} path="/" render={renderTermurah} hargaTermurah={hargaTermurah}/>
-          <SectionProduk title="Semua Produk" data={produkSemua} path="/"render={renderSemua} />
-        </div>
-
-        <div className="mainIklan">
-          <h5>ini iklan</h5>
+          <SectionProduk title="Semua Produk" data={produkSemua} path="/"render={renderSemua} loginUntukLihatSemua={loginUntukLihatSemua}/>
         </div>
       </div>
     </div>

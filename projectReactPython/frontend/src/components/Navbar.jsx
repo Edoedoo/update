@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const { listKategori1, listSubKategori1 } = useContext(DataContext);
   const [activeKategori, setActiveKategori] = useState([]); 
+  const [limit] = useState (30)
+  const [page] = useState (1)
 
   const navigate = useNavigate();
 
@@ -27,7 +29,7 @@ const Navbar = () => {
 
   const btnSubKategori = (e, kategoriId, subkategoriId) => {
     e.stopPropagation();
-    navigate(`/kategori/${kategoriId}/subKategori/${subkategoriId}`);
+    navigate(`/limit/${limit}/page/${page}/kategori/${kategoriId}/subkategori/${subkategoriId}`);
   };
 
   return (
@@ -70,7 +72,7 @@ const Navbar = () => {
               >
                 <h6
                   className="lihatSemuaKategoriTerkait"
-                  onClick={() => navigate(`/kategori/${kategori.id}`)}
+                  onClick={() => navigate(`/limit/${limit}/page/${page}/kategori/${kategori.id}`)}
                 >
                   lihat semua {kategori.kategori}
                 </h6>
@@ -79,7 +81,7 @@ const Navbar = () => {
                     <div
                       key={sub.id}
                       className="btnNavbar subkategoriBtn"
-                      onClick={(e) => btnSubKategori(e, kategori.id, sub.id)}
+                      onClick={(e) => btnSubKategori(e, kategori.id, sub.id )}
                     >
                       <h6>{sub.subKategoriName}</h6>
                     </div>

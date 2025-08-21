@@ -8,6 +8,8 @@ import NotFoundPages from "./pages/NotFound";
 import DetailProduk from "./components/DetailProduk";
 import ProductByKategoriPage from "./components/productByKategoriPage";
 import ProductBySubKategoriPage from "./components/productBySubKategoriPage";
+import ProductByTopRate from "./components/ProductByTopRate";
+import ProductByLowPrice from "./components/ProductByLowPrice";
 
 export default function App() {
   return (
@@ -18,8 +20,10 @@ export default function App() {
           {/* Layout Utama */}
           <Route element={<MainLayout />}>
             <Route path="/" element={<MenuPage />} />
-            <Route path="/kategori/:kategoriId" element={<ProductByKategoriPage />} />
-            <Route path="/kategori/:kategoriId/subkategori/:subkategoriId" element={<ProductBySubKategoriPage />} />
+            <Route path="/limit/:limit/page/:page/kategori/:kategoriId" element={<ProductByKategoriPage />} />
+            <Route path="/limit/:limit/page/:page/kategori/:kategoriId/subkategori/:subkategoriId" element={<ProductBySubKategoriPage />} />
+            <Route path="/limit/:limit/page/:page/kategori/:kategoriId/subkategori/:subkategoriId/toprate/:toprate" element={<ProductByTopRate />}/>
+            <Route path="/limit/:limit/page/:page/kategori/:kategoriId/subkategori/:subkategoriId/toprate/:toprate/lowerprice/:lowerprice" element={<ProductByLowPrice />}/>
             <Route path="/detailProduk" element={<DetailProduk />} />
           </Route>
 

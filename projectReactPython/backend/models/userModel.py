@@ -46,7 +46,7 @@ def listSubKategori():
 
 
         # SEMUA PRODUK
-def allProduct(kategoriid, subkategoriid, limit=30, page=1):
+def allProduct( limit, page, kategoriid, subkategoriid, toprate, lowerprice ):
     conn = getConnection()
     ws = conn['Produk']
     allProduct = []
@@ -57,10 +57,16 @@ def allProduct(kategoriid, subkategoriid, limit=30, page=1):
         id_kategori = row[2]
         id_subkategori = row[3]
         deskripsi = row[4]
-        harga = row[5]
+        try:
+            harga = float(row[5]) if row[5] is not None else 0
+        except ValueError:
+            harga = 0
         stok = row[6]
         berat = row[7]
-        rating = row[8]
+        try:
+            rating = float(row[8]) if row[8] is not None else 0
+        except ValueError:
+            rating = 0
         promo = row[9]
 
         if id_product: 
@@ -84,6 +90,13 @@ def allProduct(kategoriid, subkategoriid, limit=30, page=1):
     if subkategoriid is not None:
         allProduct = [p for p in allProduct if p["id_subkategori"] == subkategoriid]
 
+    if toprate is not None:
+        allProduct = sorted(allProduct, key=lambda x: x['rating'], reverse=True)
+
+    if lowerprice is not None:
+        allProduct = sorted(allProduct, key=lambda x: x['harga'])
+
+
     start = (page - 1) * limit
     end = start + limit
     pagedProduk = allProduct[start:end]
@@ -94,7 +107,7 @@ def allProduct(kategoriid, subkategoriid, limit=30, page=1):
 
 
                          #===> PRODUK REKOMENDASI <===
-def listProdukRekomendasi(limit=30, page=1):
+def listProdukRekomendasi(limit, page):
     conn = getConnection()
     wsProdukRekomendasi = conn['Produk_Rekomendasi']
     wsProduk = conn['Produk']
@@ -158,7 +171,7 @@ def listProdukRekomendasi(limit=30, page=1):
     return pagedProduk
 
                          #===> PRODUK HARGA TERMURAH <===
-def listProdukByLowPrice(limit=30, page=1):
+def listProdukByLowPrice(limit, page):
     conn = getConnection()
     ws = conn['Produk']
     allProduct = []
@@ -230,6 +243,21 @@ def listGambarProduk():
 
     return list(listGambar.values())
 
+
+def listNamaProduk():
+    conn = getConnection()
+    ws = conn['Produk']
+    listProduk = []
+
+    for row in ws.iter_rows(min_row=2, values_only=True):
+        id_produk = row[0]
+        nama_produk = row[1]
+
+        listProduk.append({
+            'id': id_produk,
+            'nama_produk': nama_produk
+        })
+    return listProduk
 
 # def getAllKategori():
 #     conn = getConnection()

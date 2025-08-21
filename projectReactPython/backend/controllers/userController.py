@@ -28,14 +28,14 @@ def getListSubKategor():
 @userBp.route('/semuaProduk', methods=['GET'])
 def getAllProduct():
     try:
+        lowerprice = request.args.get("lowerprice", type=str)
+        toprate = request.args.get("toprate", type=str)
         kategoriid = request.args.get("kategoriid", type=int)
         subkategoriid = request.args.get("subkategoriid", type=int)
         limit = request.args.get("limit", default=30, type=int)
         page = request.args.get("page", default=1, type=int)
 
-
-
-        data = userModel.allProduct(kategoriid, subkategoriid, limit=limit, page=page)
+        data = userModel.allProduct( limit, page, kategoriid, subkategoriid, toprate, lowerprice )
         if data is None:
             return jsonify({'error': 'Gagal mensgambil data list Produk...'}), 500
         return jsonify(data)
@@ -48,10 +48,10 @@ def getAllProduct():
 @userBp.route('/listProdukRekomendasi', methods=['GET'])
 def getProdukRekomendasi():
     try:
-        limit = int(request.args.get("limit", 20))
-        page = int(request.args.get("page", 1))
+        limit = int(request.args.get("limit",default=30))
+        page = int(request.args.get("page", default=1))
 
-        data = userModel.listProdukRekomendasi(limit=limit, page=page)
+        data = userModel.listProdukRekomendasi(limit, page)
 
         if data is None:
             return jsonify({'error': 'Gagal mengambil data list Produk Rekomendasi...'}), 500
@@ -65,10 +65,10 @@ def getProdukRekomendasi():
 @userBp.route('/listProdukHargaTermurah', methods=['GET'])
 def getProdukByLowPrice():
     try:
-        limit = int(request.args.get("limit", 30))
-        page = int(request.args.get("page", 1))
+        limit = int(request.args.get("limit", default=30))
+        page = int(request.args.get("page", default=30))
 
-        data = userModel.listProdukByLowPrice(limit=limit, page=page)
+        data = userModel.listProdukByLowPrice(limit, page)
 
         if data is None:
             return jsonify({'error': 'Gagal mengambil data list Produk Termurah...'}), 500
@@ -86,6 +86,12 @@ def getGambarProduk():
         return jsonify({'error': 'Gagal mengambil data Gambar Produk...'}), 500
     return jsonify(data)
     
+@userBp.route('/listNamaProduk', methods=['GET'])
+def getListNameProduk ():
+    data = userModel.listNamaProduk()
+    if data is None:
+        return jsonify({'error': 'Gagal mengambil data nama Produk...'}), 500
+    return jsonify(data)
 
 
 

@@ -6,15 +6,14 @@ import { DataContext } from "../globalState/FetchDataGlobal";
 const ProductByKategoriPage = () => {
     const {formatRupiah, getAllProduct} = useContext(DataContext);
     const [produkAllKategori, setProdukAllKategori] = useState([])
-    const {kategoriId} = useParams ();
+    const {kategoriId, page, limit} = useParams ();
     
     useEffect(() => {
         const getTopRekomendasi = async () => {
             const data = await getAllProduct({ 
-                kategoriid: parseInt(kategoriId),  
-                subkategoriid: null,
-                limit: 30, 
-                page: 1 
+                kategoriid: parseInt(kategoriId),
+                limit: parseInt(limit), 
+                page: parseInt(page)
             });
             setProdukAllKategori(data);
         };
