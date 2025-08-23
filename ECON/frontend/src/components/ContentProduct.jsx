@@ -1,0 +1,341 @@
+// ContentProduct.js
+import React, { useState, useEffect, useContext } from "react";
+import "../css/ContentProduct.css";
+import { useNavigate } from "react-router-dom";
+import imageProduk from "../assets/ecLogoBlack.png"; 
+import imageProdukPromo from "../assets/promoMark.png"; 
+import imageNavbarPromo from "../assets/pamfletPromo.jpg"; 
+import imageNavbarPromo2 from "../assets/pamfletPromo2.jpg"; 
+import { DataContext } from "../globalState/FetchDataGlobal";
+
+
+const ContentProduct = () => {
+  const [promoIndex, setPromoIndex] = useState(0);
+  const promoImages = [imageNavbarPromo, imageNavbarPromo2, imageProduk];
+  const navigate = useNavigate();
+  const { formatRupiah, getProdukRekomendasi, getProdukTermurah, getAllProduct, setLoading} = useContext(DataContext);
+  const [produkTerRekomendasi, setProdukTerRekomendasi] = useState([]);
+  const [produkTermurah, setProduktermurah] = useState([]);
+  const [limit, setLimit] = useState(25)
+  const [allProduk, setAllProduk] = useState([]);
+  const [semuaProduk, setSemuaProduk] = useState([]);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const status = localStorage.getItem("login") == "true"
+  const [showButton, setShowButton] = useState(false);
+
+
+            // UP TO TOP
+  useEffect(() => {
+    const handleScroll = () => {
+      setShowButton(true);
+    };
+  
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  };
+            // BTN NAVIGATE
+  const btnSelengkapnya = () => {
+    navigate('/')
+  }
+  const btnLihatSemua = (title) => {
+    navigate(`/cari?keyword=${title}`)
+  }
+  const btnLihatDetailProduk = (id) => {
+    navigate(`/detailProduk?id=${id}`)
+  }
+  
+
+            // BUTTON NEXT PAGE
+  const btnPage = () => {
+    setLimit(prev => prev + 25);
+    setLoadingMore(true);
+    setTimeout(() => {
+      setLoadingMore(false);
+    }, 1000); 
+  };
+  
+
+
+            // PRODUK REKOMENDASI
+  const totalRekomendasi = produkTerRekomendasi.reduce((sum, item) => sum + (item.total_direkomendasikan || 0), 0)
+  const produkRekomendasi = produkTerRekomendasi.map((item, i) => ({
+    id: item.id_produk,
+    uniqueId: `rekom-${i + 1}`,
+    nama: item.produk_detail.name_produk,
+    harga: item.produk_detail.harga,
+    id_kategori: item.produk_detail.id_kategori,
+    id_subKategori: item.produk_detail.id_subKategori,
+    deskripsi: item.produk_detail.deskripsi,
+    rating: item.produk_detail.rating,
+    stok: item.produk_detail.stok,
+    berat: item.produk_detail.berat,
+    promo: item.produk_detail.promo, 
+    totalRekomendasi
+  }));
+            // PRODUK TERMURAH
+  let hargaTermurah = null;
+  if (produkTermurah.length > 0) {
+    hargaTermurah = produkTermurah.reduce(
+      (acc, cur) => (cur.harga < acc ? cur.harga : acc),
+      produkTermurah[0].harga
+    );
+  }
+  const produkMurah = produkTermurah.map((item, i) => ({
+    id: item.id,
+    uniqueId: `termurah-${i + 1}`,
+    nama: item.nama_produk,
+    harga: item.harga,
+    id_kategori: item.id_kategori,
+    id_subKategori: item.id_subKategori,
+    deskripsi: item.deskripsi,
+    rating: item.rating,
+    stok: item.stok,
+    berat: item.berat,
+    promo: item.promo,
+  }));
+
+  const loginUntukLihatSemua = ''
+  const produkSemua = semuaProduk.map((item, i) => ({
+    id: item.id,
+    uniqueId: `semua-${i + 1}`,
+    nama: item.nama_produk,
+    harga: item.harga,
+    id_kategori: item.id_kategori,
+    id_subKategori: item.id_subKategori,
+    deskripsi: item.deskripsi,
+    rating: item.rating,
+    stok: item.stok,
+    berat: item.berat,
+    promo: item.promo,
+  }));
+
+  // Slideshow promo
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPromoIndex((prev) => (prev + 1) % promoImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    promoImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
+
+  useEffect(() => {
+    const getTopRekomendasi = async () => {
+        setLoading(true)
+        const data = await getProdukRekomendasi({ page: 1 });
+        setProdukTerRekomendasi(data.slice(0, 6)); 
+        setLoading(false)
+      };
+      
+      const gettTopTermurah = async () => {
+        const data = await getProdukTermurah({ page: 1 });
+        setProduktermurah(data.slice(0, 6))
+      }
+
+      const gettSemuaProduk = async () => {
+        const data = await getAllProduct({ page: 1 });
+        setAllProduk(data);
+        setSemuaProduk(data.slice(0, 25));
+    
+    };
+
+      getTopRekomendasi();
+      gettTopTermurah();
+      gettSemuaProduk();
+  }, []);
+
+
+
+  useEffect(() => {
+    if (allProduk.length > 0) {
+      setSemuaProduk(allProduk.slice(0, limit));
+    }
+  }, [limit, allProduk]);
+
+
+
+
+  // Render produk card
+  const renderRekomendasi = (produkArray) =>
+    produkArray.map((p) => (
+      <div key={p.uniqueId} className="product rekom" onClick={() => btnLihatDetailProduk(p.id)}>
+        <div className="imageProduk">
+          <img className="imageProdukMain" src={imageProduk} alt={p.nama} loading="lazy" />
+          {p.promo && <img className="imgPromo" src={imageProdukPromo} alt="Promo" loading="lazy" />}
+        </div>
+        <div className="box-identitas">
+          <div className="top-box-identitas">
+            <h6 className="namaProduk">{p.nama}</h6>
+          </div>
+          <div className="mid-box-identitas">
+            <h6>mark</h6>
+          </div>
+          <div className="bot-box-identitas">
+            <div style={{display:'flex', alignItems:'center'}}>
+              <img src="https://deo.shopeemobile.com/shopee/modules-federation/live/0/shopee__item-card-standard-v2/0.1.77/pc/d7099d3fd1dfdaf705ab.svg" alt="" style={{height:'35%'}}/>
+              <h6 >{p.rating}</h6>
+            </div>
+            <h6 className="hargaProduk">{formatRupiah(p.harga)}</h6>
+          </div>
+          <div className="markDetailProduk"><h6>detail</h6></div>
+        </div>
+      </div>
+    ));
+
+  const renderTermurah = (produkArray) =>
+    produkArray.map((p) => (
+      <div key={p.uniqueId} className="product termurah" onClick={() => btnLihatDetailProduk(p.id)}>
+        <div className="imageProduk">
+          <img className="imageProdukMain" src={imageProduk} alt={p.nama} loading="lazy" />
+          {p.promo && <img className="imgPromo" src={imageProdukPromo} alt="Promo" loading="lazy" />}
+        </div>
+        <div className="box-identitas">
+          <div className="top-box-identitas">
+            <h6 className="namaProduk">{p.nama}</h6>
+          </div>
+          <div className="mid-box-identitas">
+            <h6>mark</h6>
+          </div>
+          <div className="bot-box-identitas">
+            <div style={{display:'flex', alignItems:'center'}}>
+              <img src="https://deo.shopeemobile.com/shopee/modules-federation/live/0/shopee__item-card-standard-v2/0.1.77/pc/d7099d3fd1dfdaf705ab.svg" alt="" style={{height:'35%'}}/>
+              <h6 >{p.rating}</h6>
+            </div>
+            <h6 className="hargaProduk">{formatRupiah(p.harga)}</h6>
+          </div>
+          <div className="markDetailProduk"><h6>detail</h6></div>
+        </div>
+      </div>
+    ));
+  
+  const renderSemua = (produkArray) =>
+    produkArray.map((p) => (
+      <div key={p.uniqueId} className="product semua" onClick={() => btnLihatDetailProduk(p.id)}>
+        <div className="imageProduk">
+          <img className="imageProdukMain" src={imageProduk} alt={p.nama} loading="lazy" />
+          {p.promo && <img className="imgPromo" src={imageProdukPromo} alt="Promo" loading="lazy" />}
+        </div>
+        <div className="box-identitas">
+          <div className="top-box-identitas">
+            <h6 className="namaProduk">{p.nama}</h6>
+          </div>
+          <div className="mid-box-identitas">
+            <h6>mark</h6>
+          </div>
+          <div className="bot-box-identitas">
+            <div style={{display:'flex', alignItems:'center'}}>
+              <img src="https://deo.shopeemobile.com/shopee/modules-federation/live/0/shopee__item-card-standard-v2/0.1.77/pc/d7099d3fd1dfdaf705ab.svg" alt="" style={{height:'35%'}}/>
+              <h6 >{p.rating}</h6>
+            </div>
+            <h6 className="hargaProduk">{formatRupiah(p.harga)}</h6>
+          </div>
+          <div className="markDetailProduk"><h6>detail</h6></div>
+        </div>
+      </div>
+    ));
+
+
+  // Reusable section
+    const SectionProduk = ({ title, data, render, totalRekomendasi, hargaTermurah, loginUntukLihatSemua}) => (
+      <div id="containerProduct">
+        <div className="contentProductTittle">
+          <h5>{title}</h5>
+          <h5 className="contentProductTittleLihat" onClick={() => btnLihatSemua(title)}>{`lihat semua >`}</h5>
+        </div>
+        {totalRekomendasi !== undefined && (
+          <h6 style={{width:'100%', textAlign:'center', fontSize:'clamp(12px, 1vw, 14px)'}}><span style={{color:'#38b6ff'}}>{totalRekomendasi}</span> orang merekomendasikan produk ini</h6>
+        )}
+        {hargaTermurah !== undefined && (
+          <h6 style={{width:'100%', textAlign:'center', fontSize:'clamp(12px, 1vw, 14px)'}}>mulai dari harga <span style={{color:'#38b6ff'}}>{formatRupiah(hargaTermurah)}</span></h6>
+        )}
+        <div className="mainProductRekomendasi">
+          {data.length > 0 ? render(data) : <h5 className="no-product">memuat produk...</h5>}
+          {/* {data.length > 0 ? render(data) : <h6>memuat produk...</h6>} */}
+        </div>
+        {loginUntukLihatSemua !== undefined && (
+          <div className="lihatLainnya">
+           <div className="btnLihatLainnya">
+              {!status ? (
+                <h5>login untuk melanjutkan</h5>
+              ) : (
+                <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+                  {semuaProduk.length >= allProduk.length ? (
+                    <>
+                      <h5 onClick={btnSelengkapnya}>selengkapnya ⟶</h5>
+                      {showButton && (
+                        <button className="btn-scroll-top" onClick={scrollToTop}>
+                          ↑ kembali ke atas
+                        </button>
+                      )}
+                    </>
+                  ) : (
+                    <h5
+                      onClick={!loadingMore ? btnPage : null}
+                      style={{ cursor: loadingMore ? "not-allowed" : "pointer" }}
+                    >
+                      {loadingMore ? (
+                        <span className="btnSpinner"></span>
+                      ) : (
+                        <>lainnya ￬</>
+                      )}
+                    </h5>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+
+
+  return (
+    <div className="contentMain">
+      <div className="navContent">
+        <div className="navContentLeft">
+          <h5>ini halaman utama</h5>
+          <div className="navContentLeftIklan">
+            <div className="fotoPromoContainer" style={{ transform: `translateX(-${promoIndex * 100}%)` }}>
+              {promoImages.map((img, i) => (
+                <div key={i} className="fotoPromo">
+                  <img src={img} alt={`promo-${i}`} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="contentProduct">
+        <div className="contentProductMain">
+          <div className="contentProductMainNavbar">
+            <marquee><h4>Lorem ipsum dolor sit amet consectetur adipisicing elit. Animi officiis earum reiciendis debitis eum vero quasi optio facilis tempora hic recusandae, error enim iure eius sunt, exercitationem neque repellat iste.</h4></marquee>
+          </div>
+
+          <SectionProduk
+            title="Rekomendasi" 
+            data={produkRekomendasi} 
+            path="/" 
+            render={renderRekomendasi} 
+            totalRekomendasi={totalRekomendasi}
+            />
+          <SectionProduk title="Termurah" data={produkMurah} path="/" render={renderTermurah} hargaTermurah={hargaTermurah}/>
+          <SectionProduk title="Semua Produk" data={produkSemua} path="/"render={renderSemua} loginUntukLihatSemua={loginUntukLihatSemua}/>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ContentProduct;
