@@ -2,8 +2,6 @@
     /* background: rgb(8 27 41); */
     align-content: space-between;
     overflow: auto;
-    color: black;
-
     padding: 5px;
     font-size: clamp(13px, 2vw, 16px);
     height: 100%;
