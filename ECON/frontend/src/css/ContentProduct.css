@@ -9,6 +9,7 @@
     display: grid;
     width: 100%;
     background: linear-gradient(to top, #ffffff00, #38b6ff);
+    padding-top: 10vh;
 }
 .navContentLeft {
     max-width: 1200px;
@@ -289,7 +290,7 @@
     .contentMain, .mainProductRekomendasi { justify-content: center; gap: 3px; padding: 0; }
     .mainProductRekomendasi {grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))}
     .contentMain {grid-template-rows:auto;}
-    .navContent { display: flex; }
+    .navContent { display: flex; padding-top: 5vh;}
     .product { aspect-ratio: 3 / 4.7; height: 260px; }
     .fotoPromo img {
         max-height: 15vh;     

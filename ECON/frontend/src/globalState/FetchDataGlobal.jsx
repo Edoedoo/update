@@ -18,17 +18,34 @@ export const DataProvider = ({ children }) => {
     // DROPDOWN NAVBAR FRONTEND (KATEGORI DAN SUBKATEGORI)
     const getListKategori = async () => {
         try {
+            const cachedKategori = localStorage.getItem('kategori');
+            if (cachedKategori) {
+                setListKategori1(JSON.parse(cachedKategori));
+                return; 
+            }
+    
             const res = await axios.get(`${getBackendURL()}/listKategori`);
             setListKategori1(res.data);
+    
+            localStorage.setItem('kategori', JSON.stringify(res.data));
         } catch (err) {
             console.error("Error mengambil kategori produk:", err);
-        } 
+        }
     };
+    
 
     const getListSubKategori = async () => {
         try {
+            const cacheSubKategori = localStorage.getItem('subkategori');
+            if (cacheSubKategori) {
+                setListSubKategori1(JSON.parse(cacheSubKategori));
+                return;
+            }
+
             const res = await axios.get(`${getBackendURL()}/listSubKategori`);
             setListSubKategori1(res.data);
+
+            localStorage.setItem('subkategori', JSON.stringify(res.data));
         } catch (err) {
             console.error("Error mengambil subKategori produk:", err);
         }

@@ -1,5 +1,5 @@
 import "../css/Header.css";
-import ecLogoData from "../assets/ecLogoWhite.png";
+import ecLogoData from "../assets/ecLogoUni.png";
 import { useState, useContext } from "react";
 import { DataContext } from "../globalState/FetchDataGlobal";
 import { useNavigate } from "react-router-dom";

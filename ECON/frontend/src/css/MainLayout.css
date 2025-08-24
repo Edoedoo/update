@@ -5,7 +5,6 @@
 .content {
     display: grid;
     grid-template-columns: 20vh auto;
-    padding-top: 10vh;
 }
 
 @media (max-width: 1024px) {
@@ -15,7 +14,6 @@
 @media (max-width: 768px) {
     .content {
         display: flex;
-        padding-top: 5vh;
     }
 }
 
