@@ -3,12 +3,11 @@ import "../css/Navbar.css";
 import { DataContext } from "../globalState/FetchDataGlobal";
 import { useNavigate } from "react-router-dom";
 
-const Navbar = () => {
+const Navbar = ({navbarTop}) => {
   const { listKategori1, listSubKategori1 } = useContext(DataContext);
   const [activeKategori, setActiveKategori] = useState([]); 
   const [limit] = useState (30)
   const [page] = useState (1)
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const Navbar = () => {
 
   return (
     <div className="Navbar">
-      <div className="navbarTop">
+      <div className="navbarTop" style={{display:navbarTop}}>
         {/* Tombol Semua */}
         <div
           className="btnNavbar active"

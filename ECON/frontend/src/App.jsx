@@ -11,7 +11,7 @@ import ProductBySubKategoriPage from "./components/productBySubKategoriPage";
 import ProductByTopRate from "./components/ProductByTopRate";
 import ProductByLowPrice from "./components/ProductByLowPrice";
 import SearchProdukPage from "./components/SearchProdukPage";
-import Setting from "./components/Setting";
+import Tampilan from "./components/Tampilan";
 import HelpPage from "./components/HelpPage";
 
 export default function App() {
@@ -29,7 +29,7 @@ export default function App() {
             <Route path="/limit/:limit/page/:page/kategori/:kategoriId/subkategori/:subkategoriId/toprate/:toprate/lowerprice/:lowerprice" element={<ProductByLowPrice />}/>
             <Route path="/cari"element={< SearchProdukPage/>}/>
             <Route path="/detailProduk" element={<DetailProduk />} />
-            <Route path="/pengaturan" element={<Setting/> } />
+            <Route path="/tampilan" element={<Tampilan/> } />
             <Route path="/bantuan" element={<HelpPage />} />
           </Route>
 

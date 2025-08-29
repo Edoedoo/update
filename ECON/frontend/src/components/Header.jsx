@@ -12,7 +12,8 @@ const Header = ({
   setting, 
   setSetting,
   help,
-  setHelp
+  setHelp,
+  setNavbarTop
 }) => {
   const { listNamaProduk } = useContext(DataContext);
   const [showSuggestion, setShowSuggestion] = useState(false);
@@ -32,10 +33,16 @@ const Header = ({
   };
 
   const settingAll = () => {
-    setSetting(navigate("/pengaturan"))
+    setSetting(navigate("/tampilan"))
+    setNavbarTop("none")
   }
   const helpAll = () => {
     setHelp(navigate("/bantuan"))
+    setNavbarTop("none")
+  }
+  const btnLogo = () => {
+    navigate('/')
+    setNavbarTop("grid")
   }
 
   const handleSearch = () => {
@@ -62,11 +69,11 @@ const Header = ({
         <h5>mulai berjualan</h5> | <h5>download</h5> | <h5 className="ikutiKami">ikuti kami </h5><br /> <img src={logoIg} alt=""/> <br /><br /><img src={logoFb} alt="" />
         </div>
         <div className="topHeaderRight">
-          <h5>🕭 Notifikasi</h5> |<h5 onClick={helpAll}>? Bantuan</h5> |<h5 onClick={settingAll}>⚙︎ Pengaturan</h5>|
+          <h5>🕭 Notifikasi</h5> |<h5 onClick={helpAll}>? Bantuan</h5> |<h5 onClick={settingAll}>👁 Tampilan</h5>|
           <div>
             {!status ? (
-              <div className="topHeaderRight!login">
-                <h5>login</h5>
+              <div className="topHeaderRightloginT" >
+                <h5>login</h5> |
                 <h5>daftar</h5>
               </div>
             ) : (
@@ -79,7 +86,7 @@ const Header = ({
       </div>
 
       <div className="midHeader">
-        <div className="navbarLogo" onClick={() => navigate("/")}>
+        <div className="navbarLogo" onClick={btnLogo}>
           <img
             src={ecLogoData}
             alt="logo perusahaan"

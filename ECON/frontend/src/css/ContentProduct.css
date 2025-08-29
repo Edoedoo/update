@@ -62,9 +62,9 @@
 #containerProduct {
     display: grid;
     max-width: 1200px;
-    border: 2px solid #79797949;
-    border-radius: 9px;
+    border-top: 2px solid #79797949;
     gap: 5px;
+    margin: 50px 0;
 }
 .contentProductTittle {
   display: flex;
@@ -288,7 +288,7 @@
     .navContentLeft { max-width: 850px; width: 100%; min-height: 15vh }
     .navContentRight, .mainIklan { display: none; }
     .contentMain, .mainProductRekomendasi { justify-content: center; gap: 3px; padding: 0; }
-    .mainProductRekomendasi {grid-template-columns: repeat(auto-fill, minmax(150px, 1fr))}
+    .mainProductRekomendasi {grid-template-columns: repeat(auto-fill, minmax(165px, 1fr))}
     .contentMain {grid-template-rows:auto;}
     .navContent { display: flex; padding-top: 5vh;}
     .product { aspect-ratio: 3 / 4.7; height: 260px; }
@@ -305,6 +305,6 @@
     .navContentLeft { min-width: 0;}
     .navContent { display: flex; }
     .product { aspect-ratio: 3 / 4.7; height: 175px }
-    .mainProductRekomendasi {grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)) }
+    .mainProductRekomendasi {grid-template-columns: repeat(auto-fill, minmax(111px, 1fr)) }
   }
   

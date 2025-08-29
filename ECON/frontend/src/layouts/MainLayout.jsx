@@ -13,23 +13,29 @@ export default function MainLayout() {
   const [search, setSearch] = useState("");
   const [setting, setSetting] = useState("");
   const [help, setHelp] = useState ("");
+  const [bg, setBg] = useState ("black")
+  const [color, setColor] = useState ("white")
+  const [navbarTop, setNavbarTop] = useState("grid")
 
+  
   return (
     <div
       className="MainLayout"
-
+      style={{backgroundColor:bg , color:color}}
     >
       <Header
         search={search}
         setSearch={setSearch}
         setSetting={setSetting}
         setHelp={setHelp}
+        setNavbarTop={setNavbarTop}
       />
 
       <div className="content">
         <Navbar
           onSubkategoriSelect={setSelectedSubkategori}
           onKategoriSelect={setSelectedKategori}
+          navbarTop={navbarTop}
         />
         <Outlet
           context={{

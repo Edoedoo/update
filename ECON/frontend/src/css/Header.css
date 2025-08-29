@@ -36,7 +36,7 @@
   height: 100%;
 }
 .ikutiKami {
-  cursor: default;
+  cursor: text;
 }
 .topHeaderLeft img {
   height: 70%;
@@ -47,6 +47,12 @@
   width: 100%;
   justify-content: end;
   align-items: center ;
+  gap: 5px;
+}
+.topHeaderRightloginT {
+  display: flex;
+  align-items: center;
+  height: 100%;
   gap: 5px;
 }
 .display-container {
